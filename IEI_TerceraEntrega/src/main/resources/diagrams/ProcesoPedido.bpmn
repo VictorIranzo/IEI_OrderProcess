@@ -10,7 +10,7 @@
     <sequenceFlow id="flow1" sourceRef="startevent2" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="¿Cliente Nuevo?"></exclusiveGateway>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Buscar cliente"></serviceTask>
+    <serviceTask id="servicetask1" name="Buscar cliente" activiti:class="groovyjarjarasm.asm.commons.SerialVersionUIDAdder$Item"></serviceTask>
     <sequenceFlow id="flow3" name="No" sourceRef="exclusivegateway1" targetRef="servicetask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${esNuevoCliente==false}]]></conditionExpression>
     </sequenceFlow>
