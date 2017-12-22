@@ -3,7 +3,7 @@
   <process id="myProcess" name="My process" isExecutable="true">
     <userTask id="usertask1" name="Introducir cliente">
       <extensionElements>
-        <activiti:formProperty id="IDCodigoCliente" name="CodigoCliente" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="IDCodigoCliente" name="CodigoCliente" type="long" expression="${codigoCliente}" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
     <startEvent id="startevent2" name="Start" activiti:initiator="kermit"></startEvent>
@@ -12,7 +12,7 @@
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
     <serviceTask id="servicetask1" name="Buscar cliente" activiti:class="groovyjarjarasm.asm.commons.SerialVersionUIDAdder$Item"></serviceTask>
     <sequenceFlow id="flow3" name="No" sourceRef="exclusivegateway1" targetRef="servicetask1">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${esNuevoCliente==false}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${codigoCliente!=0}]]></conditionExpression>
     </sequenceFlow>
     <userTask id="usertask2" name="Alta cliente">
       <extensionElements>
@@ -20,12 +20,13 @@
         <activiti:formProperty id="IDDireccion" name="Dirección" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="IDFechaAlta" name="Fecha de Alta" type="date" required="true"></activiti:formProperty>
         <activiti:formProperty id="IDCorreoElectronico" name="Correo Electrónico" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="IDNumeroTC" name="Número de tarjeta de crédito" type="long" required="true"></activiti:formProperty>
+        <activiti:formProperty id="IDNumeroTC" name="Número de tarjeta de crédito" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="IDEmisor" name="Emisor" type="string" required="true"></activiti:formProperty>
+        <activiti:taskListener event="complete" class="pedidos.ListenerInsertarCliente"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow4" name="Sí" sourceRef="exclusivegateway1" targetRef="usertask2">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${esNuevoCliente==true}]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${codigoCliente==0}]]></conditionExpression>
     </sequenceFlow>
     <exclusiveGateway id="exclusivegateway2" name="¿Encontrado?"></exclusiveGateway>
     <sequenceFlow id="flow5" sourceRef="servicetask1" targetRef="exclusivegateway2"></sequenceFlow>
@@ -189,7 +190,7 @@
         <omgdi:waypoint x="310.0" y="267.0"></omgdi:waypoint>
         <omgdi:waypoint x="400.0" y="267.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="310.0" y="267.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="100.0" x="310.0" y="267.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
@@ -197,7 +198,7 @@
         <omgdi:waypoint x="290.0" y="407.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="407.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="290.0" y="287.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="100.0" x="290.0" y="287.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
@@ -209,14 +210,14 @@
         <omgdi:waypoint x="610.0" y="177.0"></omgdi:waypoint>
         <omgdi:waypoint x="700.0" y="177.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="620.0" y="231.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="100.0" x="620.0" y="231.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow7" id="BPMNEdge_flow7">
         <omgdi:waypoint x="630.0" y="267.0"></omgdi:waypoint>
         <omgdi:waypoint x="680.0" y="267.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="630.0" y="267.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="12.0" x="630.0" y="267.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow8" id="BPMNEdge_flow8">
@@ -242,14 +243,14 @@
         <omgdi:waypoint x="790.0" y="171.0"></omgdi:waypoint>
         <omgdi:waypoint x="790.0" y="247.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="1061.0" y="231.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="12.0" x="1061.0" y="231.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow13" id="BPMNEdge_flow13">
         <omgdi:waypoint x="1070.0" y="266.0"></omgdi:waypoint>
         <omgdi:waypoint x="1130.0" y="267.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="1070.0" y="266.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="100.0" x="1070.0" y="266.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
@@ -261,7 +262,7 @@
         <omgdi:waypoint x="1310.0" y="180.0"></omgdi:waypoint>
         <omgdi:waypoint x="1390.0" y="180.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="1320.0" y="231.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="16.0" x="1320.0" y="231.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
@@ -269,7 +270,7 @@
         <omgdi:waypoint x="1240.0" y="307.0"></omgdi:waypoint>
         <omgdi:waypoint x="1045.0" y="400.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="14.0" width="100.0" x="1310.0" y="286.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="12.0" x="1310.0" y="286.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
