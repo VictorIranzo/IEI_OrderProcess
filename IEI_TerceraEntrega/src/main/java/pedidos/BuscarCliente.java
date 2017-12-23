@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 
-public class ServicioBuscarCliente implements JavaDelegate {
+public class BuscarCliente implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
@@ -18,5 +18,9 @@ public class ServicioBuscarCliente implements JavaDelegate {
 		
 		ServicioClientes servicio = new ServicioClientes();
 		boolean encontrado = servicio.buscarCliente(Integer.parseInt(codigoCliente));
+		
+		// añadir el resultado al motor.
+		System.out.println("Encontrado " + encontrado); 
+		execution.setVariable("IDEncontrado", encontrado); 
 	}
 }

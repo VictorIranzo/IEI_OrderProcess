@@ -6,22 +6,31 @@
         <activiti:formProperty id="IDCodigoCliente" name="CodigoCliente" type="long" expression="${codigoCliente}" required="true"></activiti:formProperty>
       </extensionElements>
     </userTask>
-    <startEvent id="startevent2" name="Start" activiti:initiator="kermit"></startEvent>
+    <startEvent id="startevent2" name="Start" activiti:initiator="kermit">
+      <extensionElements>
+        <activiti:formProperty id="IDCliente" name="Codigo Cliente" type="string" required="true"></activiti:formProperty>
+      </extensionElements>
+    </startEvent>
     <sequenceFlow id="flow1" sourceRef="startevent2" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="¿Cliente Nuevo?"></exclusiveGateway>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Buscar cliente" activiti:class="groovyjarjarasm.asm.commons.SerialVersionUIDAdder$Item"></serviceTask>
+    <serviceTask id="servicetask1" name="Buscar cliente" activiti:class="java.pedidos.BuscarCliente"></serviceTask>
     <sequenceFlow id="flow3" name="No" sourceRef="exclusivegateway1" targetRef="servicetask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${codigoCliente!=0}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="usertask2" name="Alta cliente">
+    <userTask id="usertask2" name="Alta cliente" activiti:assignee="fozzie">
       <extensionElements>
         <activiti:formProperty id="IDNombre" name="Nombre" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="IDDireccion" name="Dirección" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="IDFechaAlta" name="Fecha de Alta" type="date" required="true"></activiti:formProperty>
-        <activiti:formProperty id="IDCorreoElectronico" name="Correo Electrónico" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="IDNumeroTC" name="Número de tarjeta de crédito" type="string" required="true"></activiti:formProperty>
-        <activiti:formProperty id="IDEmisor" name="Emisor" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="IDEmail" name="Correo Electrónico" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="IDTarjeta" name="Número de tarjeta de crédito" type="string" required="true"></activiti:formProperty>
+        <activiti:formProperty id="IDEmisor" name="Emisor" type="enum" required="true">
+          <activiti:value id="American" name="American Express"></activiti:value>
+          <activiti:value id="Visa" name="Visa"></activiti:value>
+          <activiti:value id="MasterCard" name="Master Card"></activiti:value>
+        </activiti:formProperty>
+        <activiti:formProperty id="IDCaducidad" name="Caducidad (yy/mm)" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="complete" class="pedidos.ListenerInsertarCliente"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -41,7 +50,7 @@
     <sequenceFlow id="flow8" sourceRef="usertask2" targetRef="exclusivegateway3"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway4" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow9" sourceRef="exclusivegateway3" targetRef="exclusivegateway4"></sequenceFlow>
-    <userTask id="usertask3" name="Introducir código artículo y cantidad">
+    <userTask id="usertask3" name="Introducir código artículo y cantidad" activiti:assignee="fozzie">
       <extensionElements>
         <activiti:formProperty id="IDCodigoArticulo" name="Código Artículo" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="IDCantidad" name="Cantidad" type="long" required="true"></activiti:formProperty>
@@ -131,7 +140,7 @@
         <omgdc:Bounds height="40.0" width="40.0" x="770.0" y="247.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask3" id="BPMNShape_usertask3">
-        <omgdc:Bounds height="62.0" width="105.0" x="870.0" y="236.0"></omgdc:Bounds>
+        <omgdc:Bounds height="78.0" width="105.0" x="870.0" y="220.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="exclusivegateway5" id="BPMNShape_exclusivegateway5">
         <omgdc:Bounds height="40.0" width="40.0" x="1030.0" y="246.0"></omgdc:Bounds>
@@ -146,10 +155,10 @@
         <omgdc:Bounds height="62.0" width="105.0" x="1390.0" y="149.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="servicetask3" id="BPMNShape_servicetask3">
-        <omgdc:Bounds height="61.0" width="111.0" x="990.0" y="400.0"></omgdc:Bounds>
+        <omgdc:Bounds height="71.0" width="111.0" x="990.0" y="390.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="usertask5" id="BPMNShape_usertask5">
-        <omgdc:Bounds height="61.0" width="125.0" x="1220.0" y="400.0"></omgdc:Bounds>
+        <omgdc:Bounds height="78.0" width="125.0" x="1221.0" y="370.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endevent2" id="BPMNShape_endevent2">
         <omgdc:Bounds height="35.0" width="35.0" x="1440.0" y="413.0"></omgdc:Bounds>
@@ -231,10 +240,10 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow10" id="BPMNEdge_flow10">
         <omgdi:waypoint x="810.0" y="267.0"></omgdi:waypoint>
-        <omgdi:waypoint x="870.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="870.0" y="259.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow11" id="BPMNEdge_flow11">
-        <omgdi:waypoint x="975.0" y="267.0"></omgdi:waypoint>
+        <omgdi:waypoint x="975.0" y="259.0"></omgdi:waypoint>
         <omgdi:waypoint x="1030.0" y="266.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow12" id="BPMNEdge_flow12">
@@ -268,17 +277,17 @@
       <bpmndi:BPMNEdge bpmnElement="flow16" id="BPMNEdge_flow16">
         <omgdi:waypoint x="1310.0" y="286.0"></omgdi:waypoint>
         <omgdi:waypoint x="1240.0" y="307.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1045.0" y="400.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1045.0" y="390.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
           <omgdc:Bounds height="16.0" width="12.0" x="1310.0" y="286.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow17" id="BPMNEdge_flow17">
-        <omgdi:waypoint x="1101.0" y="430.0"></omgdi:waypoint>
-        <omgdi:waypoint x="1220.0" y="430.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1101.0" y="425.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1221.0" y="409.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow18" id="BPMNEdge_flow18">
-        <omgdi:waypoint x="1345.0" y="430.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1346.0" y="409.0"></omgdi:waypoint>
         <omgdi:waypoint x="1440.0" y="430.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow19" id="BPMNEdge_flow19">

@@ -13,8 +13,8 @@ public class ListenerInsertarCliente implements TaskListener {
 		String Nombre = (String) tareaDelegada.getExecution().getVariable("IDNombre");
 		String email = (String) tareaDelegada.getExecution().getVariable("IDDireccion");
 		java.util.Date fechaAlta = (java.util.Date) tareaDelegada.getExecution().getVariable("IDFechaAlta");
-		String correoElectronico = (String) tareaDelegada.getExecution().getVariable("IDCorreoElectronico");
-		String NumTarjeta = (String) tareaDelegada.getExecution().getVariable("IDNumeroTC");
+		String correoElectronico = (String) tareaDelegada.getExecution().getVariable("IDEmail");
+		String NumTarjeta = (String) tareaDelegada.getExecution().getVariable("IDTarjeta");
 		String emisor = (String) tareaDelegada.getExecution().getVariable("IDEmisor");
 		
 		String caducidad = (String) tareaDelegada.getExecution().getVariable("IDCaducidad");
