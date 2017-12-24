@@ -7,7 +7,7 @@ public class ValidarPedido implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		int idCabeceraPedido = (Integer) execution.getVariable("IDCabeceraPedido");
+		int idCabeceraPedido = ((Number) execution.getVariable("IDCabeceraPedido")).intValue();
 
 		ServicioPedidos service = new ServicioPedidos();
 		int numPedidosValidos = service.obtenerNumeroPedidosDeCabecera(idCabeceraPedido);
@@ -16,6 +16,9 @@ public class ValidarPedido implements JavaDelegate {
 
 		if (numPedidosValidos <= 0) {
 			execution.setVariable("IDValido", false);
+		}
+		else {
+			execution.setVariable("IDValido", true);
 		}
 	}
 

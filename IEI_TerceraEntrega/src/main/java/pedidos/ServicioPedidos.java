@@ -17,7 +17,7 @@ public class ServicioPedidos {
 		Connection conn = Conexion.abrirConexion();
 
 		if (conn != null) {
-			String SQL = "SELECT CodigoArticulo FROM Articulos  WHERE CodigoArticulo =?";
+			String SQL = "SELECT idArticulos FROM articulos WHERE CodigoArticulo =?";
 
 			try {
 				PreparedStatement statement = conn.prepareStatement(SQL);
@@ -101,7 +101,7 @@ public class ServicioPedidos {
 		Connection conn = Conexion.abrirConexion();
 		if (conn != null) {
 			try {
-				String SQL = "SELECT COUNT(*) FROM LineaPedidos WHERE CabeceraPedidos_idCabeceraPedidos = ?";
+				String SQL = "SELECT COUNT(*) FROM lineaPedidos WHERE CabeceraPedidos_idCabeceraPedidos = ?";
 
 				PreparedStatement statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 				statement.setInt(1, idCabeceraPedido);
@@ -122,7 +122,7 @@ public class ServicioPedidos {
 		ResultSet rs = null;
 		if (conn != null) {
 			try {
-				String SQL = "SELECT _idArticulos, Cantidad FROM LineaPedidos WHERE CabeceraPedidos_idCabeceraPedidos = ?";
+				String SQL = "SELECT _idArticulos, Cantidad FROM lineaPedidos WHERE CabeceraPedidos_idCabeceraPedidos = ?";
 
 				PreparedStatement statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 				statement.setInt(1, idCabecera);
@@ -145,7 +145,7 @@ public class ServicioPedidos {
 		Connection conn = Conexion.abrirConexion();
 		if (conn != null) {
 			try {
-				String SQL = "SELECT Stock FROM Articulo WHERE idArticulos = ?";
+				String SQL = "SELECT Stock FROM articulos WHERE idArticulos = ?";
 
 				PreparedStatement statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 				statement.setInt(1, idArticulo);
@@ -165,7 +165,7 @@ public class ServicioPedidos {
 		Connection conn = Conexion.abrirConexion();
 		if (conn != null) {
 			try {
-				String SQL = "SELECT UPADATE a.Reservado SET a.Reservado = a.Reservado + ?" + " FROM Articulos a "
+				String SQL = "SELECT UPADATE a.Reservado SET a.Reservado = a.Reservado + ?" + " FROM articulos a "
 						+ "WHERE a.idArticulos = ?";
 
 				PreparedStatement statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);

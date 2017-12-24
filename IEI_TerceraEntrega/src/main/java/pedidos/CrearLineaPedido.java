@@ -1,18 +1,19 @@
 package pedidos;
 
+import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.DelegateTask;
+import org.activiti.engine.delegate.JavaDelegate;
 import org.activiti.engine.delegate.TaskListener;
 
-public class ListenerCrearLineaPedido implements TaskListener {
+public class CrearLineaPedido implements JavaDelegate {
 
 	@Override
-	public void notify(DelegateTask tareaDelegada) {
+	public void execute(DelegateExecution execution) throws Exception {
 		ServicioPedidos service = new ServicioPedidos();
 
 		// Acceso a las variables introducidas en el formulario.
-		String codigoArticulo = (String) tareaDelegada.getExecution().getVariable("IDCodigoArticulo");
-		int cantidad = ((Number) tareaDelegada.getExecution().getVariable("IDCantidad")).intValue();
-		boolean masArticulos = (Boolean) tareaDelegada.getExecution().getVariable("IDMasArticulos");
+		String codigoArticulo = (String) execution.getVariable("IDCodigoArticulo");
+		int cantidad = ((Number) execution.getVariable("IDCantidad")).intValue();
 
 		System.out.println("Buscando el artículo con código: " + codigoArticulo);
 		int idArticulo = service.buscarArticuloPorCodigo(codigoArticulo);
@@ -20,10 +21,11 @@ public class ListenerCrearLineaPedido implements TaskListener {
 		if (idArticulo != -1) {
 			System.out.println("Articulo encontrado, creando línea de pedido.");
 
-			int idCabeceraPedido = (Integer) tareaDelegada.getExecution().getVariable("IDCabeceraPedido");
+			int idCabeceraPedido = ((Number) execution.getVariable("IDCabeceraPedido")).intValue();
 			service.insertarLineaPedido(idCabeceraPedido, idArticulo, cantidad);
 		}
-
+		else {
 		System.out.println("Artículo no encontrado.");
+		}
 	}
 }

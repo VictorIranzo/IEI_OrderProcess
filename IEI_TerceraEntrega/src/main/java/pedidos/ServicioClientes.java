@@ -15,7 +15,7 @@ public class ServicioClientes {
 		Connection conn = Conexion.abrirConexion();
 
 		if (conn != null) {
-			String SQL = "SELECT idClientes FROM Cliente where idClientes =?";
+			String SQL = "SELECT idClientes FROM clientes where idClientes =?";
 			try {
 				PreparedStatement statement = conn.prepareStatement(SQL);
 				statement.setInt(1, codigoCliente);
@@ -73,7 +73,7 @@ public class ServicioClientes {
 		Connection conn = Conexion.abrirConexion();
 
 		if (conn != null) {
-			String SQL = "SELECT Correoelectronico FROM Cliente where idClientes =?";
+			String SQL = "SELECT Correoelectronico FROM clientes where idClientes =?";
 			try {
 				PreparedStatement statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 
