@@ -9,7 +9,8 @@ import java.time.ZoneId;
 import java.util.Date;
 
 public class ServicioPedidos {
-
+	
+	
 	public int buscarArticuloPorCodigo(String codArticulo) {
 		boolean encontrado = false;
 		int idArticulo = -1;
@@ -41,6 +42,7 @@ public class ServicioPedidos {
 		return idArticulo;
 	}
 
+	//Inserta un nuevo pedido
 	public int insertarCabeceraPedidos(Date fecha, int idCliente) {
 		int clave = 0;
 		Connection conn = Conexion.abrirConexion();
@@ -66,7 +68,8 @@ public class ServicioPedidos {
 		}
 		return clave;
 	}
-
+	
+	//Inserta una linea en el pedido y devuelve su cave
 	public int insertarLineaPedido(int idCabecera, int idArticulo, int cantidad) {
 		int clave = 0;
 		Connection conn = Conexion.abrirConexion();
@@ -114,4 +117,82 @@ public class ServicioPedidos {
 		}
 		return numeroPedidos;
 	}
+	
+	public ResultSet obtenerLineasPedido(int idCabecera) {
+		Connection conn = Conexion.abrirConexion();
+		ResultSet rs = null;
+		if (conn != null) {
+			try {
+				String SQL = "SELECT _idArticulos, Cantidad FROM LineaPedidos WHERE CabeceraPedidos_idCabeceraPedidos = ?";
+
+				PreparedStatement statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+				statement.setInt(1, idCabecera);
+				rs = statement.executeQuery();
+				
+				if(rs!=null) rs.close();
+				
+			}catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				Conexion.cerrarConexion();
+			}
+		}
+		return rs;	
+	}
+	
+	public int obtenerStock(int idArticulo){
+		int stock = 0;
+		Connection conn = Conexion.abrirConexion();
+		if (conn != null) {
+			try {
+				String SQL = "SELECT Stock FROM Articulo WHERE idArticulos = ?";
+
+				PreparedStatement statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+				statement.setInt(1, idArticulo);
+				
+				ResultSet rs = statement.executeQuery();
+				stock = rs.getInt(1);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				Conexion.cerrarConexion();
+			}
+		}
+		return stock;
+	}
+	
+	
+	public void reservarArticulo(int idArticulo, int cantidad) {
+		Connection conn = Conexion.abrirConexion();
+		if (conn != null) {
+			try {
+				String SQL = "SELECT UPADATE a.Reservado SET a.Reservado = a.Reservado + ?"
+						+ " FROM Articulos a "
+						+ "WHERE a.idArticulos = ?";
+
+				PreparedStatement statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+				statement.setInt(1, cantidad);
+				statement.setInt(2, idArticulo);
+				
+				ResultSet rs = statement.executeQuery();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				Conexion.cerrarConexion();
+			}
+		}
+		
+	}
+	
+	
+/*	public void comprobarStockYReservar(){
+		int stock = 0;
+		Connection conn = Conexion.abrirConexion();
+		if (conn != null) {
+				String SQL = "UPADATE a.Reservado SET a.Reservado = a.Reservado + p.Cantidad "
+						+ "FROM Articulos a INNER JOIN LineaPedidos p ON (p._idArticulos = a.idArticulos) "
+						+ "WHERE a.Stock >= p.Cantidad ";
+	
+		}
+	}*/
 }
