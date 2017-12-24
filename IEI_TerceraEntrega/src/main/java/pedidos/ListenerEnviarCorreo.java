@@ -25,9 +25,11 @@ public class ListenerEnviarCorreo implements TaskListener {
 
 		String email = (String) delegado.getExecution().getVariable("IDEmail");
 		String asunto = (String) delegado.getExecution().getVariable("IDAsunto");
-		String cuerpo = (String) delegado.getExecution().getVariable("IDCuerpo");
 		Date fechaEntrega = (Date) delegado.getExecution().getVariable("IDFechaEntrega");
-
+		String cuerpo = (String) delegado.getExecution().getVariable("IDCuerpo");
+		
+		cuerpo += "\nFecha de Entrega: " + fechaEntrega.toString();
+		
 		// Envío de correo.
 
 		final String username = "ieiterceraentrega@gmail.com"; // desde donde se envía

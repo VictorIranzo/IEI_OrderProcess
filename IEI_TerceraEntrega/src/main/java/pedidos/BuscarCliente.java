@@ -12,17 +12,16 @@ public class BuscarCliente implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		String codigoCliente = (String) execution.getVariable("IDCodigoCliente");
+		int codigoCliente = ((Number) execution.getVariable("IDCliente")).intValue();
 
 		System.out.println("Buscando al cliente con código: " + codigoCliente);
 
 		ServicioClientes servicio = new ServicioClientes();
-		boolean encontrado = servicio.buscarCliente(Integer.parseInt(codigoCliente));
+		boolean encontrado = servicio.buscarCliente(codigoCliente);
 
 		// Añadir el resultado al motor.
 		System.out.println("Encontrado " + encontrado);
 
 		execution.setVariable("IDEncontrado", encontrado);
-		execution.setVariable("IDCliente", codigoCliente);
 	}
 }

@@ -11,7 +11,7 @@ public class ListenerCrearLineaPedido implements TaskListener {
 
 		// Acceso a las variables introducidas en el formulario.
 		String codigoArticulo = (String) tareaDelegada.getExecution().getVariable("IDCodigoArticulo");
-		int cantidad = (Integer) tareaDelegada.getExecution().getVariable("IDCantidad");
+		int cantidad = ((Number) tareaDelegada.getExecution().getVariable("IDCantidad")).intValue();
 		boolean masArticulos = (Boolean) tareaDelegada.getExecution().getVariable("IDMasArticulos");
 
 		System.out.println("Buscando el artículo con código: " + codigoArticulo);
