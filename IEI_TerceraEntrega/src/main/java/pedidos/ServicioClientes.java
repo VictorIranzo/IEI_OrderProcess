@@ -43,9 +43,10 @@ public class ServicioClientes {
 			String SQL = "INSERT INTO clientes (Nombre, Direccion, FechaAlta, NumTarjeta, Emisor, Correoelectronico) VALUES (?,?,?,?,?,?)";
 			try {
 				PreparedStatement statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+				
 				statement.setString(1, nombre);
 				statement.setString(2, direccion);
-				// convertir java.util.Date a java.sql.Date
+				// Convertir java.util.Date a java.sql.Date.
 				java.sql.Date sqlDate = java.sql.Date.valueOf(fechaAlta.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 				statement.setDate(3, sqlDate);
 				statement.setString(4, numTarjetaCredito);

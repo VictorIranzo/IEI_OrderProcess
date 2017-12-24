@@ -3,16 +3,20 @@ package pedidos;
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
 
-public class ValidarPedido implements JavaDelegate{
+public class ValidarPedido implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		String codigoArticulo = (String) execution.getVariable("IDCodigoArticulo");
+		int idCabeceraPedido = (Integer) execution.getVariable("IDCabeceraPedido");
 		
-		System.out.println("Buscando el artículo con código: " + codigoArticulo);
 		ServicioPedidos service = new ServicioPedidos();
+		int numPedidosValidos = service.obtenerNumeroPedidosDeCabecera(idCabeceraPedido);
 		
-		boolean encontrado = service.buscarArticulo(codigoArticulo);
+		System.out.println("Pedidos válidos: " + numPedidosValidos);
+		
+		if(numPedidosValidos <= 0) {
+			execution.setVariable("IDValido", false); 
+		}
 	}
 
 }

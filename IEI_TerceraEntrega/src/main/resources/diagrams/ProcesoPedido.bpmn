@@ -14,7 +14,13 @@
     <sequenceFlow id="flow1" sourceRef="startevent2" targetRef="usertask1"></sequenceFlow>
     <exclusiveGateway id="exclusivegateway1" name="¿Cliente Nuevo?"></exclusiveGateway>
     <sequenceFlow id="flow2" sourceRef="usertask1" targetRef="exclusivegateway1"></sequenceFlow>
-    <serviceTask id="servicetask1" name="Buscar cliente" activiti:class="java.pedidos.BuscarCliente"></serviceTask>
+    <serviceTask id="servicetask1" name="Buscar cliente" activiti:class="java.pedidos.BuscarCliente">
+      <extensionElements>
+        <activiti:field name="IDEncontrado">
+          <activiti:string><![CDATA[false]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow3" name="No" sourceRef="exclusivegateway1" targetRef="servicetask1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${codigoCliente!=0}]]></conditionExpression>
     </sequenceFlow>
@@ -30,7 +36,6 @@
           <activiti:value id="Visa" name="Visa"></activiti:value>
           <activiti:value id="MasterCard" name="Master Card"></activiti:value>
         </activiti:formProperty>
-        <activiti:formProperty id="IDCaducidad" name="Caducidad (yy/mm)" type="string" required="true"></activiti:formProperty>
         <activiti:taskListener event="complete" class="pedidos.ListenerInsertarCliente"></activiti:taskListener>
       </extensionElements>
     </userTask>
@@ -43,7 +48,11 @@
     <sequenceFlow id="flow6" name="No" sourceRef="exclusivegateway2" targetRef="endevent1">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${clienteEncontrado==false}]]></conditionExpression>
     </sequenceFlow>
-    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway"></exclusiveGateway>
+    <exclusiveGateway id="exclusivegateway3" name="Exclusive Gateway">
+      <extensionElements>
+        <activiti:executionListener event="start" class="pedidos.ListenerCrearCabeceraPedido"></activiti:executionListener>
+      </extensionElements>
+    </exclusiveGateway>
     <sequenceFlow id="flow7" name="Sí" sourceRef="exclusivegateway2" targetRef="exclusivegateway3">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${clienteEncontrado==true}]]></conditionExpression>
     </sequenceFlow>
@@ -58,12 +67,22 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow10" sourceRef="exclusivegateway4" targetRef="usertask3"></sequenceFlow>
-    <exclusiveGateway id="exclusivegateway5" name="¿Más artículos?"></exclusiveGateway>
+    <exclusiveGateway id="exclusivegateway5" name="¿Más artículos?">
+      <extensionElements>
+        <activiti:executionListener event="end" class="pedidos.ListenerCrearLineaPedido"></activiti:executionListener>
+      </extensionElements>
+    </exclusiveGateway>
     <sequenceFlow id="flow11" sourceRef="usertask3" targetRef="exclusivegateway5"></sequenceFlow>
     <sequenceFlow id="flow12" name="Sï" sourceRef="exclusivegateway5" targetRef="exclusivegateway4">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${masArticulos==true}]]></conditionExpression>
     </sequenceFlow>
-    <serviceTask id="servicetask2" name="Validar pedido"></serviceTask>
+    <serviceTask id="servicetask2" name="Validar pedido" activiti:class="pedidos.ValidarPedido">
+      <extensionElements>
+        <activiti:field name="IDValido">
+          <activiti:string><![CDATA[true]]></activiti:string>
+        </activiti:field>
+      </extensionElements>
+    </serviceTask>
     <sequenceFlow id="flow13" name="No" sourceRef="exclusivegateway5" targetRef="servicetask2">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${masArticulos==false}]]></conditionExpression>
     </sequenceFlow>
@@ -199,7 +218,7 @@
         <omgdi:waypoint x="310.0" y="267.0"></omgdi:waypoint>
         <omgdi:waypoint x="400.0" y="267.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="100.0" x="310.0" y="267.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="16.0" x="310.0" y="267.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow4" id="BPMNEdge_flow4">
@@ -207,7 +226,7 @@
         <omgdi:waypoint x="290.0" y="407.0"></omgdi:waypoint>
         <omgdi:waypoint x="380.0" y="407.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="100.0" x="290.0" y="287.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="12.0" x="290.0" y="287.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow5" id="BPMNEdge_flow5">
@@ -259,7 +278,7 @@
         <omgdi:waypoint x="1070.0" y="266.0"></omgdi:waypoint>
         <omgdi:waypoint x="1130.0" y="267.0"></omgdi:waypoint>
         <bpmndi:BPMNLabel>
-          <omgdc:Bounds height="16.0" width="100.0" x="1070.0" y="266.0"></omgdc:Bounds>
+          <omgdc:Bounds height="16.0" width="16.0" x="1070.0" y="266.0"></omgdc:Bounds>
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge bpmnElement="flow14" id="BPMNEdge_flow14">
