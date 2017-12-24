@@ -92,6 +92,7 @@
     <userTask id="usertask4" name="Informar rechazo a cliente">
       <extensionElements>
         <activiti:formProperty id="IDDetallesRechazo" name="Detalles Rechazo" type="string" required="true"></activiti:formProperty>
+        <activiti:taskListener event="complete" class="pedidos.ListenerEnviarRechazo"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <sequenceFlow id="flow15" name="No" sourceRef="exclusivegateway6" targetRef="usertask4">
@@ -107,7 +108,8 @@
         <activiti:formProperty id="IDEmail" name="Correo Electronico" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="IDAsunto" name="Asunto" type="string" required="true"></activiti:formProperty>
         <activiti:formProperty id="IDCuerpo" name="Cuerpo correo" type="string" required="true"></activiti:formProperty>
-        <activiti:taskListener event="complete" class="pedidos.EnviarCorreo"></activiti:taskListener>
+        <activiti:taskListener event="complete" class="pedidos.ListenerEnviarCorreo"></activiti:taskListener>
+        <activiti:taskListener event="create" class="pedidos.ListenerFechaEnvio"></activiti:taskListener>
       </extensionElements>
     </userTask>
     <endEvent id="endevent2" name="End"></endEvent>

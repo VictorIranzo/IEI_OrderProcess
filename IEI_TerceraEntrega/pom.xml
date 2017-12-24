@@ -10,6 +10,11 @@
     <flowable-version>5.22.0</flowable-version>
   </properties>
   <dependencies>
+  	<dependency>
+      <groupId>com.sun.mail</groupId>
+      <artifactId>javax.mail</artifactId>
+      <version>1.6.0</version>
+    </dependency>
     <dependency>
       <groupId>org.flowable</groupId>
       <artifactId>flowable-engine</artifactId>
