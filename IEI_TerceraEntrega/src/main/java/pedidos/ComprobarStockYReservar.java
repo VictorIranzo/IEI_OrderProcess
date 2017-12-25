@@ -1,7 +1,6 @@
 package pedidos;
 
 import java.sql.ResultSet;
-import java.util.Date;
 
 import org.activiti.engine.delegate.DelegateExecution;
 import org.activiti.engine.delegate.JavaDelegate;
@@ -10,7 +9,7 @@ public class ComprobarStockYReservar implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		int idCabeceraPedido = (Integer) execution.getVariable("IDCabeceraPedido");
+		int idCabeceraPedido = ((Number) execution.getVariable("IDCabeceraPedido")).intValue();
 		boolean todoReservado = true;
 
 		ServicioPedidos service = new ServicioPedidos();
@@ -28,10 +27,9 @@ public class ComprobarStockYReservar implements JavaDelegate {
 				System.out.println("No queda stock suficiente del articulo :" + idArticulo);
 				todoReservado = false;
 			}
-			execution.setVariable("IDReservado", todoReservado);
-
 		}
-
+		
+		execution.setVariable("IDReservado", todoReservado);
 	}
 
 }

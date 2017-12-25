@@ -11,7 +11,6 @@ import java.util.Date;
 public class ServicioPedidos {
 
 	public int buscarArticuloPorCodigo(String codArticulo) {
-		boolean encontrado = false;
 		int idArticulo = -1;
 
 		Connection conn = Conexion.abrirConexion();
@@ -25,11 +24,9 @@ public class ServicioPedidos {
 				ResultSet result = statement.executeQuery();
 
 				if (result.next()) {
-					encontrado = true;
 					result.first();
 					idArticulo = result.getInt(1);
 				} else
-					encontrado = false;
 
 				Conexion.cerrarConexion();
 				return idArticulo;
@@ -107,6 +104,7 @@ public class ServicioPedidos {
 				statement.setInt(1, idCabeceraPedido);
 
 				ResultSet rs = statement.executeQuery();
+				rs.first();
 				numeroPedidos = rs.getInt(1);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -122,19 +120,14 @@ public class ServicioPedidos {
 		ResultSet rs = null;
 		if (conn != null) {
 			try {
-				String SQL = "SELECT _idArticulos, Cantidad FROM lineaPedidos WHERE CabeceraPedidos_idCabeceraPedidos = ?";
+				String SQL = "SELECT Articulos_idArticulos, Cantidad FROM lineapedidos WHERE CabeceraPedidos_idCabeceraPedidos = ?";
 
 				PreparedStatement statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 				statement.setInt(1, idCabecera);
 				rs = statement.executeQuery();
 
-				if (rs != null)
-					rs.close();
-
 			} catch (SQLException e) {
 				e.printStackTrace();
-			} finally {
-				Conexion.cerrarConexion();
 			}
 		}
 		return rs;
@@ -151,6 +144,7 @@ public class ServicioPedidos {
 				statement.setInt(1, idArticulo);
 
 				ResultSet rs = statement.executeQuery();
+				rs.first();
 				stock = rs.getInt(1);
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -165,14 +159,13 @@ public class ServicioPedidos {
 		Connection conn = Conexion.abrirConexion();
 		if (conn != null) {
 			try {
-				String SQL = "SELECT UPADATE a.Reservado SET a.Reservado = a.Reservado + ?" + " FROM articulos a "
-						+ "WHERE a.idArticulos = ?";
+				String SQL = "UPDATE articulos SET Reservado = Reservado + ?  WHERE idArticulos = ?";
 
 				PreparedStatement statement = conn.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
 				statement.setInt(1, cantidad);
 				statement.setInt(2, idArticulo);
 
-				ResultSet rs = statement.executeQuery();
+				 statement.execute();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			} finally {

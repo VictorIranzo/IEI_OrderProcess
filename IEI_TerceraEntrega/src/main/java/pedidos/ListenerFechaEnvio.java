@@ -7,6 +7,7 @@ import org.activiti.engine.delegate.TaskListener;
 import org.joda.time.DateTime;
 
 public class ListenerFechaEnvio implements TaskListener {
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	public void notify(DelegateTask delegado) {

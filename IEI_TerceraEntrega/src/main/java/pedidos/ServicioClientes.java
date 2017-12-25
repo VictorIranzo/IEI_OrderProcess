@@ -80,6 +80,7 @@ public class ServicioClientes {
 				statement.setInt(1, idCliente);
 
 				ResultSet rs = statement.executeQuery();
+				rs.first();
 				correo = rs.getString(1);
 			} catch (SQLException e) {
 				e.printStackTrace();

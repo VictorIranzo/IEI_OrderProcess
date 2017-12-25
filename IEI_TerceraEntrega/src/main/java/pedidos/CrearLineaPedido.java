@@ -1,9 +1,7 @@
 package pedidos;
 
 import org.activiti.engine.delegate.DelegateExecution;
-import org.activiti.engine.delegate.DelegateTask;
 import org.activiti.engine.delegate.JavaDelegate;
-import org.activiti.engine.delegate.TaskListener;
 
 public class CrearLineaPedido implements JavaDelegate {
 
