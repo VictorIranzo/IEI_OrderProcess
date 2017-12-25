@@ -1,5 +1,7 @@
 package pedidos;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.activiti.engine.delegate.DelegateTask;
@@ -14,15 +16,23 @@ public class ListenerEnviarCorreo implements TaskListener {
 
 		System.out.println("Inicio de envío de correo");
 
-		String email = (String) delegado.getExecution().getVariable("IDEmail");
+		ServicioClientes service = new ServicioClientes();
+
+		int idCliente = ((Number) delegado.getExecution().getVariable("IDCliente")).intValue();
+		String email = service.obtenerCorreo(idCliente);
+		
 		String asunto = (String) delegado.getExecution().getVariable("IDAsunto");
 		Date fechaEntrega = (Date) delegado.getExecution().getVariable("IDFechaEntrega");
 		String cuerpo = (String) delegado.getExecution().getVariable("IDCuerpo");
 		
-		cuerpo += "\nFecha de Entrega: " + fechaEntrega.toString();
+		DateFormat formatter = new SimpleDateFormat("DD-MM-yyyy"); 
+		
+		cuerpo += "\nFecha de Entrega: " + formatter.format(fechaEntrega);
 		
 		ServicioCorreo servicioCorreo = new ServicioCorreo();
 		servicioCorreo.enviarCorreo(email, asunto, cuerpo);
+		
+		System.out.println("Correo enviado");
 	}
 
 }

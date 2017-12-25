@@ -22,9 +22,9 @@ public class ComprobarStockYReservar implements JavaDelegate {
 
 			if (stock - cantidad >= 0) {
 				service.reservarArticulo(idArticulo, cantidad);
-				System.out.println("Reservando " + cantidad + "unidades del articulo :" + idArticulo);
+				System.out.println("Reservando " + cantidad + " unidades del articulo: " + idArticulo);
 			} else {
-				System.out.println("No queda stock suficiente del articulo :" + idArticulo);
+				System.out.println("No queda stock suficiente del articulo: " + idArticulo);
 				todoReservado = false;
 			}
 		}

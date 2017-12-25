@@ -23,5 +23,7 @@ public class ListenerEnviarRechazo implements TaskListener {
 		
 		ServicioCorreo serviceCorreo = new ServicioCorreo();
 		serviceCorreo.enviarCorreo(email, asunto, cuerpo);
+		
+		System.out.println("Correo enviado");
 	}
 }
